@@ -1,0 +1,51 @@
+/* Container اصلی */
+.reserve-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* دو ستون مساوی */
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #f4f4f4; /* رنگ پس‌زمینه ملایم */
+}
+
+/* سمت اطلاعات */
+.reserve-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* فرم رزرو */
+.reserve-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* عناصر فرم */
+.reserve-form input,
+.reserve-form select,
+.reserve-form button {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* دکمه */
+.reserve-form button {
+  grid-column: span 2; /* دکمه دو ستون را اشغال می‌کند */
+  background-color: #495e57;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ریسپانسیو برای موبایل */
+@media (max-width: 768px) {
+  .reserve-section {
+    grid-template-columns: 1fr; /* یک ستون */
+  }
+
+  .reserve-form {
+    grid-template-columns: 1fr; /* عناصر فرم یک ستون */
+  }
+}

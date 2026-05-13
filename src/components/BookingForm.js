@@ -5,7 +5,7 @@ export default function BookingForm({
   dispatch,
   bookingData,
   setBookingData,
-  submitForm
+  submitForm,
 }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("17:00");
@@ -14,52 +14,40 @@ export default function BookingForm({
 
   const [errors, setErrors] = useState({});
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!date) {
-      newErrors.date = "Date is required";
-    }
-
-    if (guests < 1 || guests > 10) {
-      newErrors.guests = "Guests must be between 1 and 10";
-    }
-
-    return newErrors;
-  };
-
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = {
-    date,
-    time,
-    guests,
-    occasion,
+    const formData = {
+      date,
+      time,
+      guests,
+      occasion,
+    };
+
+    const updatedBookings = [...bookingData, formData];
+
+    setBookingData(updatedBookings);
+
+    localStorage.setItem(
+      "bookings",
+      JSON.stringify(updatedBookings)
+    );
+
+    submitForm(formData);
   };
-
-  const updatedBookings = [...bookingData, formData];
-
-  setBookingData(updatedBookings);
-
-  localStorage.setItem("bookings", JSON.stringify(updatedBookings));
-
-  submitForm(formData);
-};
 
   return (
     <form
       onSubmit={handleSubmit}
       style={{ display: "grid", maxWidth: "300px", gap: "20px" }}
     >
-      <label>Choose date</label>
-
+      <label htmlFor="date">Choose date</label>
       <input
+        id="date"
         type="date"
         value={date}
         onChange={(e) => {
           const selectedDate = e.target.value;
-
           setDate(selectedDate);
 
           dispatch({
@@ -69,12 +57,7 @@ export default function BookingForm({
         }}
       />
 
-      {errors.date && (
-        <p style={{ color: "red" }}>{errors.date}</p>
-      )}
-
       <label>Choose time</label>
-
       <select
         value={time}
         onChange={(e) => setTime(e.target.value)}
@@ -86,9 +69,9 @@ export default function BookingForm({
         ))}
       </select>
 
-      <label>Number of guests</label>
-
+      <label htmlFor="guests">Number of guests</label>
       <input
+        id="guests"
         type="number"
         min="1"
         max="10"
@@ -96,12 +79,7 @@ export default function BookingForm({
         onChange={(e) => setGuests(e.target.value)}
       />
 
-      {errors.guests && (
-        <p style={{ color: "red" }}>{errors.guests}</p>
-      )}
-
       <label>Occasion</label>
-
       <select
         value={occasion}
         onChange={(e) => setOccasion(e.target.value)}
@@ -114,6 +92,7 @@ export default function BookingForm({
         Make Your Reservation
       </button>
 
+      {/* فقط جدول */}
       <table
         border="1"
         style={{ marginTop: "20px", width: "100%" }}

@@ -1,5 +1,4 @@
 import { fetchAPI } from "./api.js";
-
 import React, { useReducer, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -11,7 +10,7 @@ import ConfirmedBooking from "./components/ConfirmedBooking";
 
 import "./App.css";
 
-// Initialize times (with fetchAPI + fallback)
+// Initialize times
 const initializeTimes = () => {
   const today = new Date();
 
@@ -19,28 +18,14 @@ const initializeTimes = () => {
     return [...fetchAPI(today), "22:00"];
   }
 
-  return [
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-  ];
+  return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
 };
 
-// Reducer (must match test expectation)
+// Reducer
 const timesReducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_TIMES":
-      return [
-        "17:00",
-        "18:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-      ];
+      return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
     default:
       return state;
   }

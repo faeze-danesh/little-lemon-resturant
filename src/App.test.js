@@ -1,8 +1,19 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { initializeTimes, timesReducer } from "./App";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test("initializeTimes returns available times", () => {
+  const result = initializeTimes();
+  expect(result.length).toBeGreaterThan(0);
+});
+
+test("updateTimes returns new times based on date", () => {
+  const state = ["17:00", "18:00"];
+
+  const action = {
+    type: "update",
+    date: new Date("2025-01-01"),
+  };
+
+  const result = timesReducer(state, action);
+
+  expect(result.length).toBeGreaterThan(0);
 });

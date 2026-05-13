@@ -14,8 +14,36 @@ export default function BookingForm({
 
   const [errors, setErrors] = useState({});
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!date) {
+      newErrors.date = "Please choose a date";
+    }
+
+    if (!time) {
+      newErrors.time = "Please choose a time";
+    }
+
+    if (!guests || guests < 1) {
+      newErrors.guests = "Minimum 1 guest required";
+    } else if (guests > 10) {
+      newErrors.guests = "Maximum 10 guests allowed";
+    }
+
+    if (!occasion) {
+      newErrors.occasion = "Please select an occasion";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
 
     const formData = {
       date,
@@ -28,19 +56,23 @@ export default function BookingForm({
 
     setBookingData(updatedBookings);
 
-    localStorage.setItem(
-      "bookings",
-      JSON.stringify(updatedBookings)
-    );
+    localStorage.setItem("bookings", JSON.stringify(updatedBookings));
 
     submitForm(formData);
+
+    setDate("");
+    setTime("17:00");
+    setGuests(1);
+    setOccasion("Birthday");
+    setErrors({});
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ display: "grid", maxWidth: "300px", gap: "20px" }}
+      style={{ display: "grid", maxWidth: "300px", gap: "10px" }}
     >
+      {/* DATE */}
       <label htmlFor="date">Choose date</label>
       <input
         id="date"
@@ -56,9 +88,12 @@ export default function BookingForm({
           });
         }}
       />
+      {errors.date && <span style={{ color: "red" }}>{errors.date}</span>}
 
-      <label>Choose time</label>
+      {/* TIME */}
+      <label htmlFor="time">Choose time</label>
       <select
+        id="time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
       >
@@ -68,7 +103,9 @@ export default function BookingForm({
           </option>
         ))}
       </select>
+      {errors.time && <span style={{ color: "red" }}>{errors.time}</span>}
 
+      {/* GUESTS */}
       <label htmlFor="guests">Number of guests</label>
       <input
         id="guests"
@@ -76,23 +113,32 @@ export default function BookingForm({
         min="1"
         max="10"
         value={guests}
-        onChange={(e) => setGuests(e.target.value)}
+        onChange={(e) => setGuests(Number(e.target.value))}
       />
+      {errors.guests && (
+        <span style={{ color: "red" }}>{errors.guests}</span>
+      )}
 
-      <label>Occasion</label>
+      {/* OCCASION */}
+      <label htmlFor="occasion">Occasion</label>
       <select
+        id="occasion"
         value={occasion}
         onChange={(e) => setOccasion(e.target.value)}
       >
-        <option>Birthday</option>
-        <option>Anniversary</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Anniversary">Anniversary</option>
       </select>
+      {errors.occasion && (
+        <span style={{ color: "red" }}>{errors.occasion}</span>
+      )}
 
-      <button type="submit">
+      {/* BUTTON (ARIA ADDED) */}
+      <button type="submit" aria-label="On Click">
         Make Your Reservation
       </button>
 
-      {/* فقط جدول */}
+      {/* TABLE */}
       <table
         border="1"
         style={{ marginTop: "20px", width: "100%" }}

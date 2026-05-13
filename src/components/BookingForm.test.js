@@ -1,12 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import BookingForm from "./BookingForm";
 
-test("reads booking data from localStorage on load", () => {
+test("renders booking data in table", () => {
   const mockData = [
-    { date: "2026-05-13", time: "17:00", guests: 2, occasion: "Birthday" }
+    {
+      date: "2026-05-13",
+      time: "17:00",
+      guests: 2,
+      occasion: "Birthday",
+    },
   ];
-
-  localStorage.setItem("bookings", JSON.stringify(mockData));
 
   render(
     <BookingForm
@@ -18,5 +21,10 @@ test("reads booking data from localStorage on load", () => {
     />
   );
 
-  expect(screen.getByText("2026-05-13")).toBeInTheDocument();
+  const table = screen.getByRole("table");
+
+  expect(within(table).getByText("2026-05-13")).toBeInTheDocument();
+  expect(within(table).getByText("17:00")).toBeInTheDocument();
+  expect(within(table).getByText("2")).toBeInTheDocument();
+  expect(within(table).getByText("Birthday")).toBeInTheDocument();
 });
